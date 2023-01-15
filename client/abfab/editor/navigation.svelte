@@ -2,7 +2,7 @@
     import { deleteFile, EditorStore, getTreeItem, loadTree } from './editor.js';
     import NavItem from './navigation.item.svelte';
     import AFButton from '../ui/button.svelte';
-    import { navigateTo } from '/~/abfab/core.js';
+    import { navigateTo } from '/++api++/~/abfab/core.js';
 
     const deleteSelected = () => {
         const path = window.location.pathname.replace('/@edit', '');

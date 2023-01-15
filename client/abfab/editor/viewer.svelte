@@ -1,7 +1,7 @@
 <script>
-    import AFInput from '/~/abfab/ui/input.svelte';
-    import AFTextarea from '/~/abfab/ui/textarea.svelte';
-    import { getRealPath, getCorePath} from '/~/abfab/core.js';
+    import AFInput from '/++api++/~/abfab/ui/input.svelte';
+    import AFTextarea from '/++api++/~/abfab/ui/textarea.svelte';
+    import { getRealPath, getCorePath} from '/++api++/~/abfab/core.js';
 
     export let componentPath;
     export let contentPath;

@@ -1,5 +1,5 @@
 <script>
-    import AFIcon from '/~/abfab/ui/icon.svelte';
+    import AFIcon from '/++api++/~/abfab/ui/icon.svelte';
     export let icon;
     export let size = 'medium'; // small, medium, large
     export let aspect = 'solid'; // solid or basic

@@ -1,6 +1,6 @@
 <script>
     import { getTreeItem, loadTree, updateTreeItem } from './editor.js';
-    import AFIcon from '/~/abfab/ui/icon.svelte';
+    import AFIcon from '/++api++/~/abfab/ui/icon.svelte';
     export let item;
 
     const toggle = () => {

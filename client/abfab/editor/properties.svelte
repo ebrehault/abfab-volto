@@ -1,10 +1,10 @@
 <script>
-    import { getRealPath, getCorePath, Content } from '/~/abfab/core.js';
-    import AFTextarea from '/~/abfab/ui/textarea.svelte';
-    import AFIcon from '/~/abfab/ui/icon.svelte';
-    import AFButton from '/~/abfab/ui/button.svelte';
-    import AFDropdown from '/~/abfab/ui/dropdown.svelte';
-    import AFInput from '/~/abfab/ui/input.svelte';
+    import { getRealPath, getCorePath, Content } from '/++api++/~/abfab/core.js';
+    import AFTextarea from '/++api++/~/abfab/ui/textarea.svelte';
+    import AFIcon from '/++api++/~/abfab/ui/icon.svelte';
+    import AFButton from '/++api++/~/abfab/ui/button.svelte';
+    import AFDropdown from '/++api++/~/abfab/ui/dropdown.svelte';
+    import AFInput from '/++api++/~/abfab/ui/input.svelte';
     import { onMount } from 'svelte';
 
     export let componentPath;
@@ -16,7 +16,7 @@
     let status;
     let branch = '';
     let commit = '';
-    const isLib = getCorePath(contentPath) === '/libs';
+    const isLib = getCorePath(contentPath) === '/node_modules';
     let lib = '';
     let installing = false;
 
@@ -34,11 +34,11 @@
             if (contentPath) {
                 const _contentPath = `${location.origin}${getRealPath(contentPath)}`;
                 iframeSnippet = `<iframe src="${_contentPath}" style="border: none; width: 100%; height: 500px;">`;
-                elementSnippet = `<script type="module" src="${location.origin}/~/abfab/element.svelte.js">
+                elementSnippet = `<script type="module" src="${location.origin}/++api++/~/abfab/element.svelte.js">
       <abfab-element contentpath="${_contentPath}" componentpath="${_componentPath}"></abfab-element>`;
             } else {
                 iframeSnippet = `<iframe src="${_componentPath}" style="border: none; width: 100%; height: 500px;">`;
-                elementSnippet = `<script type="module" src="${location.origin}/~/abfab/element.svelte.js">
+                elementSnippet = `<script type="module" src="${location.origin}/++api++/~/abfab/element.svelte.js">
       <abfab-element componentpath="${_componentPath}"></abfab-element>`;
             }
         }
@@ -137,7 +137,7 @@
     {#if isLib}
         <h3>Install libraries</h3>
         <p>
-            Allows to install a library and all its dependencies in the <code>/libs</code> directory.
+            Allows to install a library and all its dependencies in the <code>/node_modules</code> directory.
         </p>
         <div class="action-container install-section">
             <AFInput bind:value={lib} label="Library" placeholder="svelte-cubed" />

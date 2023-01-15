@@ -1,6 +1,6 @@
 <svelte:options tag="abfab-element"></svelte:options>
 <script>
-    import { getRealPath, API} from '/~/abfab/core.js';
+    import { getRealPath, API} from '/++api++/~/abfab/core.js';
     import { onMount } from 'svelte';
 
     export let componentpath;

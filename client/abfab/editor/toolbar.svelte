@@ -1,6 +1,6 @@
 <script>
-    import AFButton from '/~/abfab/ui/button.svelte';
-    import AFDropdown from '/~/abfab/ui/dropdown.svelte';
+    import AFButton from '/++api++/~/abfab/ui/button.svelte';
+    import AFDropdown from '/++api++/~/abfab/ui/dropdown.svelte';
     import {AbFabStore} from '../core.js';
     import {EditorStore} from './editor.js';
  

@@ -1,5 +1,5 @@
 <script>
-    import { AbFabStore, getRealPath, API} from '/~/abfab/core.js';
+    import { AbFabStore, getRealPath, API} from '/++api++/~/abfab/core.js';
     import { onDestroy } from 'svelte';
     import { derived } from 'svelte/store';
 
@@ -54,7 +54,7 @@
             // TODO: move to editor.js and declare dynamically
             const response = await API.get(path.replace('/@edit', '/@edit-data'));
             const code = await response.text();
-            const module = await import(`/~/abfab/editor/editor.svelte`);
+            const module = await import(`/++api++/~/abfab/editor/editor.svelte`);
             content = code;
             component = module.default;
         } else {

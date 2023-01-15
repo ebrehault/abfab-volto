@@ -1,7 +1,7 @@
 <script>
-    import AFInput from '/~/abfab/ui/input.svelte';
-    import AFRadio from '/~/abfab/ui/radio.svelte';
-    import AFButton from '/~/abfab/ui/button.svelte';
+    import AFInput from '/++api++/~/abfab/ui/input.svelte';
+    import AFRadio from '/++api++/~/abfab/ui/radio.svelte';
+    import AFButton from '/++api++/~/abfab/ui/button.svelte';
     import { addFile } from './editor.js';
     import { navigateTo } from '../core.js';
 

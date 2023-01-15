@@ -1,6 +1,6 @@
 <script>
-    import AFButton from '/~/abfab/ui/button.svelte';
-    import { clickOutside } from '/~/abfab/ui/clickOutside.js';
+    import AFButton from '/++api++/~/abfab/ui/button.svelte';
+    import { clickOutside } from '/++api++/~/abfab/ui/clickOutside.js';
 
     export let label = 'Menu';
     export let toTop = false;
