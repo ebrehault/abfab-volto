@@ -11,8 +11,10 @@ let redirecting = false;
 
 export function redirectToLogin() {
   if (!redirecting) {
+    // TODO: not relevant
     localStorage.removeItem('auth');
-    navigateTo(`/login?return_url=${window.location.pathname}`);
+    // TODO: use Volto router?
+    location.href = `/login?return_url=${window.location.pathname}`;
     redirecting = true;
   }
 }
@@ -36,7 +38,9 @@ export function getCorePath(path) {
 }
 export const API = {
   getHeaders: (extraHeaders) => {
-    const auth = { Authorization: 'Bearer ' + localStorage.getItem('auth') };
+    // Plone auth is done with cookier (AFAIK)
+    // const auth = { Authorization: 'Bearer ' + localStorage.getItem('auth') };
+    const auth = {};
     return extraHeaders ? { ...auth, ...extraHeaders } : auth;
   },
   get: (path, extraHeaders) => {

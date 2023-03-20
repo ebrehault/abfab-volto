@@ -22,43 +22,41 @@ export const EditorStore = writable({
   showNavigation: true,
 });
 
-export const loadTree = async (parent) => {
-  const response = await API.get(
-    parent ? `${parent}/@tree` : `/++api++/~/@tree`,
-  );
+export const loadTree = async () => {
+  const response = await API.get(`/++api++/abfab_tree`);
   if (response.ok) {
     const currentLocation = getCorePath(
       window.location.pathname.replace('/@edit', ''),
     );
-    const tree = [
-      {
-        type: 'Directory',
-        path: parent ? getCorePath(parent) : '/',
-        children: await response.json(),
-        expanded: true,
-      },
-    ];
-    const mapTree = (item) => {
-      const itemPath = getCorePath(item.path);
-      return {
-        name: item.path === '/' ? '/++api++/~' : item.path.split('/').pop(),
-        path: getRealPath(item.path),
-        type: item.type,
-        children: !!item.children
-          ? item.children
-              .sort((a, b) => a.path.localeCompare(b.path))
-              .map(mapTree)
-          : undefined,
-        expanded: currentLocation.startsWith(itemPath),
-        selected: currentLocation === itemPath,
-        notLoaded: item.not_loaded,
-      };
+    const tree = await response.json();
+    const mapTree = (item, path) => {
+      const isDirectory = !item.type && !item.path;
+      if (isDirectory) {
+        return {
+          name: path.split('/').pop() || '/',
+          type: 'Directory',
+          path: getRealPath(path || '/'),
+          children: Object.entries(item).map(([id, data]) =>
+            mapTree(data, `${path}/${id}`),
+          ),
+          expanded: currentLocation.startsWith(path),
+          selected: currentLocation === path,
+        };
+      } else {
+        return {
+          name: item.path.split('/').pop(),
+          path: getRealPath(item.path),
+          type: item.type,
+          expanded: currentLocation.startsWith(item.path),
+          selected: currentLocation === item.path,
+        };
+      }
     };
-    if (!parent) {
-      EditorStore.update((state) => ({ ...state, tree: tree.map(mapTree) }));
-    } else {
-      updateTreeItem(tree.map(mapTree)[0]);
-    }
+    const treeData = mapTree(tree['/'], '');
+    EditorStore.update((state) => ({
+      ...state,
+      tree: [treeData],
+    }));
   }
 };
 
