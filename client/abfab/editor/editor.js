@@ -184,33 +184,26 @@ function _saveFile(filepath, type, content) {
   const path = filepath.split('/');
   const filename = path.pop();
   const container = path.join('/');
-  return API.head(filepath)
-    .then((res) => {
-      if (res.status === 401) {
-        redirectToLogin();
-      }
-      const body = {
-        '@type': type,
-        id: filename,
-      };
-      if (content && (type === 'Content' || type === 'Directory')) {
+  return API.head(filepath).then((res) => {
+    if (res.status === 401) {
+      redirectToLogin();
+    }
+    const body = {
+      '@type': type,
+      id: filename,
+    };
+    if (content) {
+      if (type === 'Content' || type === 'Directory') {
         body.data = JSON.parse(content);
       }
-      return res.status === 404
-        ? API.post(container, JSON.stringify(body))
-        : API.patch(filepath, JSON.stringify(body));
-    })
-    .then((res) => {
-      if (res.status === 401) {
-        redirectToLogin();
-      }
       if (type === 'File') {
-        return API.patch(filepath + '/@upload/file', content, {
-          'Content-Type': 'application/octet-stream',
-          'X-UPLOAD-FILENAME': filename,
-        });
+        body.file = content;
       }
-    });
+    }
+    return res.status === 404
+      ? API.post(container, JSON.stringify(body))
+      : API.patch(filepath, JSON.stringify(body));
+  });
 }
 
 export async function deleteFile(path) {
