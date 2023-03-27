@@ -23,14 +23,9 @@
   let properties = false;
   let viewer;
   let codemirror;
-  let mode = 'edit';
   let hasGit = false;
   const subscriptions = [];
-  subscriptions.push(
-    derived(AbFabStore, (state) => state.query).subscribe(
-      (query) => (mode = new URLSearchParams(query).get('mode') || 'edit'),
-    ),
-  );
+
   subscriptions.push(
     derived(AbFabStore, (state) => state.path).subscribe(
       () => (properties = false),
@@ -40,9 +35,10 @@
   $: {
     const currentPath = location.pathname.replace('/@edit', '');
     let obj;
+    console.log('content', content);
     try {
       obj = JSON.parse(content);
-      type = obj.type_name;
+      type = obj.type;
       viewComponent = obj.view;
     } catch (e) {
       type = 'File';
@@ -187,7 +183,7 @@
     class:with-nav={$showNavigation}
     class:has-error={hasError}
   >
-    {#if type === 'Directory' && mode === 'add'}
+    {#if type === 'Directory'}
       <div class="add-container">
         <Add />
       </div>
