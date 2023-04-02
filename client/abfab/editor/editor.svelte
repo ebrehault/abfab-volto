@@ -35,7 +35,6 @@
   $: {
     const currentPath = location.pathname.replace('/@edit', '');
     let obj;
-    console.log('content', content);
     try {
       obj = JSON.parse(content);
       type = obj.type;

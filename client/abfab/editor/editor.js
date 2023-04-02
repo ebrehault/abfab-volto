@@ -184,7 +184,7 @@ function _saveFile(filepath, type, content) {
   const path = filepath.split('/');
   const filename = path.pop();
   const container = path.join('/');
-  return API.head(filepath).then((res) => {
+  return API.get(filepath).then((res) => {
     if (res.status === 401) {
       redirectToLogin();
     }
@@ -208,12 +208,19 @@ function _saveFile(filepath, type, content) {
 
 export async function deleteFile(path) {
   const deletion = await API.delete(path);
-  if (deletion.status === 200) {
+  if (deletion.status === 204) {
     EditorStore.update((state) => ({ ...state, tree: deleteTreeItem(path) }));
+  }
+  if (path.endsWith('.svelte')) {
+    await deleteFile(path + '.js');
   }
 }
 
 export async function addFile(containerPath, name, type, content) {
+  containerPath = containerPath.endsWith('/')
+    ? containerPath.slice(0, containerPath.length - 1)
+    : containerPath;
+  containerPath = getRealPath(containerPath);
   const path = `${containerPath}/${name}`;
   await saveFile(path, type, content);
   EditorStore.update((state) => ({

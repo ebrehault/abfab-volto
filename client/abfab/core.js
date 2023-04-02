@@ -34,7 +34,11 @@ export function getRealPath(path) {
 
 const CORE_PATH_RE = new RegExp(`${NAV_ROOT.replaceAll('+', '\\+')}(.+)`);
 export function getCorePath(path) {
-  return path.replace(CORE_PATH_RE, '/$1');
+  if (path === NAV_ROOT) {
+    return '/';
+  } else {
+    return path.replace(CORE_PATH_RE, '/$1');
+  }
 }
 export const API = {
   getHeaders: (extraHeaders) => {
