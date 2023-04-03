@@ -34,11 +34,11 @@
             if (contentPath) {
                 const _contentPath = `${location.origin}${getRealPath(contentPath)}`;
                 iframeSnippet = `<iframe src="${_contentPath}" style="border: none; width: 100%; height: 500px;">`;
-                elementSnippet = `<script type="module" src="${location.origin}/++api++/~/abfab/element.svelte.js">
+                elementSnippet = `<script type="module" src="${location.origin}/++api++/~/abfab/element.svelte.js"></script>
       <abfab-element contentpath="${_contentPath}" componentpath="${_componentPath}"></abfab-element>`;
             } else {
                 iframeSnippet = `<iframe src="${_componentPath}" style="border: none; width: 100%; height: 500px;">`;
-                elementSnippet = `<script type="module" src="${location.origin}/++api++/~/abfab/element.svelte.js">
+                elementSnippet = `<script type="module" src="${location.origin}/++api++/~/abfab/element.svelte.js"></script>
       <abfab-element componentpath="${_componentPath}"></abfab-element>`;
             }
         }
