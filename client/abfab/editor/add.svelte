@@ -56,7 +56,7 @@
       <AFInput
         bind:value={name}
         label={`Create a new file at ${containerPath}`}
-        placeholder="my-file.svelte"
+        placeholder="somewhere/my-file.svelte"
         required
       />
       <div>
