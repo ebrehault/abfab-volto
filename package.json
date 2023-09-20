@@ -1,7 +1,7 @@
 {
   "name": "abfab-volto",
-  "version": "0.1.0",
-  "description": "abfab-volto: Volto add-on",
+  "version": "1.0.0",
+  "description": "abfab-volto: Volto block for AbFab",
   "main": "src/index.js",
   "license": "MIT",
   "keywords": [
@@ -12,6 +12,9 @@
   ],
   "scripts": {
     "i18n": "rm -rf build/messages && NODE_ENV=production i18n --addon"
+  },
+  "bin": {
+    "abfab-upload": "scripts/upload.js"
   },
   "dependencies": {
     "svelte": "3.53.1"
