@@ -44,32 +44,64 @@ Components are written in Svelte, they are compiled in the browser (you do not n
 
 ## Installation
 
-Install abfab.plone by adding it to your buildout:
+- Install abfab.plone with `pip`:
 
-```
-    [buildout]
+  ```
+      $ pip install abfab.plone
+  ```
 
-    ...
+  Or using buildout:
 
-    eggs =
-        abfab.plone
-```
+  ```
+      [buildout]
 
-and then running `bin/buildout`
-
-In Volto, add abfab-volto to your add-ons:
-
-```js
-    {
-      "name": "my-nice-volto-project",
       ...
-      "addons": [
-        "abfab-volto",
+
+      eggs =
+          abfab.plone
+  ```
+
+  and then running `bin/buildout`
+
+- Raise the upload max size limit in `zope.conf`:
+
+  ```
+    <dos_protection>
+        form-memory-limit 4MB
+    </dos_protection>
+  ```
+
+- In Volto, add abfab-volto to your `package.json`:
+
+  ```js
+      {
+        "name": "my-nice-volto-project",
         ...
-      ],
-      ...
-    }
+        "addons": [
+          "abfab-volto",
+          ...
+        ],
+        ...
+      }
+  ```
+
+Then, restart your Plone server and Volto, go to the Site settings and install the AbFab add-on.
+
+Before using AbFab, you need to upload the Svelte library and the AbFab editor implementation (the AbFab editor is based on AbFab itself, it is not Volto-based, it must be uploaded to your server). Go to your Volto project, and run the following commands:
+
 ```
+npx abfab-upload --path ./svelte
+npx abfab-upload --local-root node_modules/abfab-volto/client --path ./abfab --target-path /
+```
+
+The `abfab-upload` script allows to upload local source to your AbFab instance. It accepst the following parameters:
+
+- `--path`: The folder (or file) path to upload
+- `--local-root`: The root from where relatives paths will be computed locally. Default is `./node_modules`.
+- `--target-root`: The root from where relatives paths will be computed locally. Default is `/node_modules`.
+- `--server`: The Plone server url. Default is `http://localhost:8080/Plone`.
+- `--username`: The admin username. Default is `admin`.
+- `--password`: The admin password. Default is `secret`.
 
 ## Author
 

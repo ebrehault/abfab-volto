@@ -1,17 +1,29 @@
+#!/usr/bin/env node
+
 const fs = require('fs/promises');
 const _fs = require('fs');
 const axios = require('axios');
 const path = require('path');
 const svelte = require('svelte/compiler');
 
+function get_param(name, defaultValue = '') {
+  const index = process.argv.indexOf(`--${name}`);
+  return index > -1 && process.argv.length > index + 1
+    ? process.argv[index + 1]
+    : defaultValue;
+}
+
 const args = process.argv.slice(2);
-const localRoot = args[0];
+const localRoot = get_param('local-root', './node_modules');
 const localRootPath = path.resolve(localRoot);
-const localPath = args[1];
-const targetRoot = args[2];
+const localPath = get_param('path');
+const targetRoot = get_param('target-root', '/node_modules');
+const server = get_param('server', 'http://localhost:8080/Plone');
+const username = get_param('username', 'admin');
+const password = get_param('password', 'secret');
 const svelteOnly = process.argv.includes('--svelteOnly');
 
-const ABFAB_SERVER_ROOT = 'http://localhost:8080/Plone/~';
+const ABFAB_SERVER_ROOT = `${server}/~`;
 const ABFAB_ROOT = '/++api++/~';
 const SVELTE_IMPORTS = new RegExp(/from "(.+\/svelte(\/\w+){0,1})";/g);
 const LIB_IMPORTS = new RegExp(
@@ -38,6 +50,7 @@ function compileSvelte(filePath) {
           console.error(err);
           return;
         }
+        console.log(`compiling ${filePath}`);
         const { js } = svelte.compile(data, {
           sveltePath: ABFAB_ROOT + '/node_modules/svelte',
           customElement: data.includes('<svelte:options tag='),
@@ -66,18 +79,28 @@ const uploadFile = async (filePath) => {
   const folderPath =
     ABFAB_SERVER_ROOT +
     filePath.replace(localRootPath, targetRoot).replace(`/${id}`, '');
-  const res = await axios.post(
-    folderPath,
-    JSON.stringify({
-      id,
-      file: bufferContent.toString(),
-    }),
-    { headers: { 'content-type': 'application/json' } },
-  );
-  console.log(res.status, res.data);
-  // don't go to fast, so we do not get a BTree ConflictError
-  await sleep(500);
-  return res;
+  try {
+    const res = await axios.post(
+      folderPath,
+      JSON.stringify({
+        id,
+        file: bufferContent.toString(),
+      }),
+      {
+        headers: { 'content-type': 'application/json' },
+        auth: {
+          username,
+          password,
+        },
+      },
+    );
+    console.log(res.status, res.data);
+    // don't go to fast, so we do not get a BTree ConflictError
+    await sleep(500);
+    return res;
+  } catch (error) {
+    console.log(filePath, error.response.status, error.response);
+  }
 };
 
 const uploadFolder = async (folderPath) => {
