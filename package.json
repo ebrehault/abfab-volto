@@ -1,6 +1,6 @@
 {
   "name": "abfab-volto",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "abfab-volto: Volto block for AbFab",
   "main": "src/index.js",
   "license": "MIT",

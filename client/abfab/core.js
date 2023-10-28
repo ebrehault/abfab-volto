@@ -42,9 +42,11 @@ export function getCorePath(path) {
 }
 export const API = {
   getHeaders: (extraHeaders) => {
-    // Plone auth is done with cookier (AFAIK)
-    // const auth = { Authorization: 'Bearer ' + localStorage.getItem('auth') };
-    const auth = {};
+    const auth_token = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('auth_token='))
+      ?.split('=')[1];
+    const auth = { Authorization: `Bearer ${auth_token}` };
     return extraHeaders ? { ...auth, ...extraHeaders } : auth;
   },
   get: (path, extraHeaders) => {
